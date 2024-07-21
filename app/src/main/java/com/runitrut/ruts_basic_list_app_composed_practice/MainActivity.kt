@@ -33,10 +33,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RutsbasiclistappcomposedpracticeTheme {
+                // A surface container using the 'background' color of the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // Calls the ShoppingListApp function
                     ShoppingListApp()
                 }
             }

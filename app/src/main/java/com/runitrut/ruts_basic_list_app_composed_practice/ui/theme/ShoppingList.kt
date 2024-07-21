@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+// Data class for ShoppingItems
 data class ShoppingItem(
     val id: Int,
     var name: String,
@@ -46,31 +47,36 @@ data class ShoppingItem(
 @Composable
 fun ShoppingListApp(){
 
+    // puts Data class ShoppingItem's into a mutable state of var "sItems"
     var sItems by remember { mutableStateOf(listOf<ShoppingItem>()) }
+    // Dialog to add items
     var showDialog by remember { mutableStateOf(false) }
+    // Text Fields
     var itemName by remember { mutableStateOf("") }
+    // Text Fields
     var itemQuantity by remember { mutableStateOf("") }
 
 
+    // Top of Column / Top of app
     Column(
+        // Fills max size UI, with 32dp padding
         modifier = Modifier.fillMaxSize().padding(32.dp),
+        // Centers Column items, vertically in the middle of the screen.
         verticalArrangement = Arrangement.Center
 
     ) {
-        Button(onClick = {showDialog = true},
+        Button( // Button to add items
+            onClick = {showDialog = true},
             modifier = Modifier.align(Alignment.CenterHorizontally)
-
         ) {
-            val doubleNumber: (Int) -> Int = {it * 2}
-
-
             Text("Add Item")
         }
-        LazyColumn(
+        LazyColumn( // Lazy Column to display list items
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
+            // Holds the contents of the LAzt Column
             items(sItems){
                 item ->
                 if(item.isEditing){
@@ -166,7 +172,7 @@ fun ShoppingItemEditor(item: ShoppingItem, onEditComplete: (String, Int) -> Unit
         , horizontalArrangement = Arrangement.SpaceEvenly
     ){
         Column{
-            BasicTextField(
+            OutlinedTextField(
                 value = editedName,
                 onValueChange = { editedName = it },
                 singleLine = true,
@@ -174,7 +180,7 @@ fun ShoppingItemEditor(item: ShoppingItem, onEditComplete: (String, Int) -> Unit
                     .wrapContentSize()
                     .padding(8.dp)
             )
-            BasicTextField(
+            OutlinedTextField(
                 value = editedQuantity,
                 onValueChange = { editedQuantity = it },
                 singleLine = true,
