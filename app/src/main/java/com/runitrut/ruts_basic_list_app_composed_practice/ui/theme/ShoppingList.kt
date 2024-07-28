@@ -39,8 +39,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-// Data class for ShoppingItems
+// Data class for ShoppingItems, the contents each shopping item will have
 data class ShoppingItem(
     val id: Int,
     var name: String,
@@ -72,7 +73,7 @@ fun ShoppingListApp(){
         verticalArrangement = Arrangement.Center
 
     ) {
-        Button( // Button to add items
+        Button( // Button to add items, set to showDialog to true
             onClick = {showDialog = true},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally).padding(top = 48.dp)
@@ -82,21 +83,21 @@ fun ShoppingListApp(){
             )
 
         ) {
-            Text("Add Item")
+            Text("Add Item", fontSize = 16.sp)
         }
         LazyColumn( // Lazy Column to display list items
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Holds the contents of the LAzt Column
+            // Holds the contents of the Lazy Column
             items(sItems){
                 item ->
                 if(item.isEditing){
                     ShoppingItemEditor(item = item, onEditComplete = {
                         editedName, editedQuantity ->
                         sItems = sItems.map{it.copy(isEditing = false)}
-                        val editedItem = sItems.find{it.id== item.id}
+                        val editedItem = sItems.find{it.id == item.id}
                         editedItem?.let{
                             it.name = editedName
                             it.quantity = editedQuantity
@@ -105,7 +106,7 @@ fun ShoppingListApp(){
                 }else {
                     ShoppingListItem(item = item , onEditClick = {
                         // finding out which item to edit
-                        sItems = sItems.map{it.copy(isEditing = it.id==item.id)}
+                        sItems = sItems.map{it.copy(isEditing = it.id == item.id)}
                     },
                         onDeleteClick = {
                         sItems = sItems-item
@@ -114,7 +115,7 @@ fun ShoppingListApp(){
             }
         }
     }
-
+    // if showDialog is true, Composable AlertDialog window will appear
     if(showDialog){
         AlertDialog(onDismissRequest = {  showDialog = false  },
             confirmButton = {
@@ -141,7 +142,7 @@ fun ShoppingListApp(){
                                         itemName = ""
                                     }
                                 }){
-                                    Text("Add")
+                                    Text("Add", fontSize = 16.sp)
                                 }
                                 Button(
                                     modifier = Modifier, colors = ButtonDefaults.buttonColors(
@@ -151,11 +152,20 @@ fun ShoppingListApp(){
                                     onClick = {
                                     showDialog = false
                                 }) {
-                                    Text("cancel")
+                                    Text("Cancel", fontSize = 16.sp)
                                 }
                             }
             },
-            title = { Text(text = "Add shopping Item")},
+            // Title on top of dialog
+            title = { Text(
+                text = "Add shopping Item",
+                fontSize = 28.sp,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .background(customColor, shape = RoundedCornerShape(6.dp)),
+                textAlign = TextAlign.Center)},
+            // Text fields within the dialog
             text = {
                 Column {
                     OutlinedTextField(
@@ -165,6 +175,7 @@ fun ShoppingListApp(){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
+                            .border(shape = RoundedCornerShape(0.dp), width = 2.dp, color = customColor)
                     )
                     OutlinedTextField(
                         value = itemQuantity,
@@ -173,6 +184,7 @@ fun ShoppingListApp(){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
+                            .border(shape = RoundedCornerShape(0.dp), width = 2.dp, color = customColor)
                     )
 
                 }
